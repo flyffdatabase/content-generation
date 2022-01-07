@@ -1,5 +1,7 @@
 <?php
 
+require_once('./ProgressBarHelper.php');
+
 class APIHelper {
     public static function DownloadFromApi($endpointUrl) {
         if (!is_dir('./apicache'))
@@ -50,9 +52,10 @@ class APIHelper {
                     }
                 }
     
-                echo ($i+1) . " of " . count($itemIds) . " objects processed.".PHP_EOL;
+                \ProgressBarHelper::PercentBar($i + 1, count($itemIds), "processed");
                 $batchItemIds = [];
             }
         }
+        echo PHP_EOL;
     }
 }

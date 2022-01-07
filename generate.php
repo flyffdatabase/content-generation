@@ -105,6 +105,6 @@ foreach($endpoints as $currentEndpoint) {
         file_put_contents('./content'. $currentEndpoint['url'] .'s' . $currentEndpoint['url'] . '_' . $currentItem['id'] . '.json', json_encode($currentItem, JSON_PRETTY_PRINT));
     });
 }
-echo "Downloading Images...";
+echo "Downloading Images..." . PHP_EOL;
 \ImageHelper::ProcessDownloadImageQueue();
 echo "Took: " . (microtime(true) - $timeStart)/60 . 'minutes';
