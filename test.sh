@@ -1,0 +1,1 @@
+docker run -v /root/zinc/data:/data -e DATA_PATH="/data" -p 4080:4080 -e FIRST_ADMIN_USER=admin -e FIRST_ADMIN_PASSWORD=passwordtest --name zinc public.ecr.aws/m5j1b6u0/zinc:v0.1.1

@@ -1,13 +1,12 @@
 <?php
-require_once('./ImageHelper.php');
-require_once('./APIHelper.php');
+require_once('./vendor/autoload.php');
 
 $monsterByDroppingItem = [];
 
 $endpoints = [[
     'url' => '/monster',
     'postProcessing' => function (&$currentItem) use (&$monsterByDroppingItem) {
-        $currentItem['icon'] = \ImageHelper::QueueDownloadImage(
+        $currentItem['icon'] = Flyffdatabase\ContentGeneration\ImageHelper::QueueDownloadImage(
             'https://flyff-api.sniegu.fr/image/monster/' . $currentItem['icon'], 
             '/icon/monster', 
             $currentItem['icon']
@@ -26,7 +25,7 @@ $endpoints = [[
     'postProcessing' => function (&$currentItem) use (&$monsterByDroppingItem) {
         $currentItem['flyffdb_dropped_by'] = [];
 
-        $currentItem['icon'] = \ImageHelper::QueueDownloadImage(
+        $currentItem['icon'] = Flyffdatabase\ContentGeneration\ImageHelper::QueueDownloadImage(
             'https://flyff-api.sniegu.fr/image/item/' . $currentItem['icon'], 
             '/icon/item', 
             $currentItem['icon']
@@ -42,7 +41,7 @@ $endpoints = [[
         for($x = 0; $x < $currentWorld['width']; $x = $x +  $currentWorld['tileSize']) {
             for($y = 0; $y < $currentWorld['height']; $y = $y + $currentWorld['tileSize']) {
                 $tileFileName = $currentWorld['tileName'] . ($x / $currentWorld['tileSize']) . '-' . ($y / $currentWorld['tileSize']) . '-0.png';
-                \ImageHelper::QueueDownloadImage(
+                Flyffdatabase\ContentGeneration\ImageHelper::QueueDownloadImage(
                     'https://flyff-api.sniegu.fr/image/world/' . $tileFileName, 
                     '/icon/world', 
                     $tileFileName
@@ -65,7 +64,7 @@ $endpoints = [[
 ],[
     'url' => '/npc',
     'postProcessing' => function (&$currentItem) {
-        $currentItem['image'] = \ImageHelper::QueueDownloadImage(
+        $currentItem['image'] = Flyffdatabase\ContentGeneration\ImageHelper::QueueDownloadImage(
             'https://flyff-api.sniegu.fr/image/npc/' . $currentItem['image'], 
             '/icon/npc', 
             $currentItem['image']
@@ -84,7 +83,7 @@ $endpoints = [[
 $timeStart = microtime(true);
 foreach($endpoints as $currentEndpoint) {
     echo "Downloading ".$currentEndpoint['url'].PHP_EOL;
-    \APIHelper::BatchDownloadFromApi($currentEndpoint['url'], function ($currentItem) use ($currentEndpoint) {
+    Flyffdatabase\ContentGeneration\APIHelper::BatchDownloadFromApi($currentEndpoint['url'], function ($currentItem) use ($currentEndpoint) {
         if (!is_dir('./content')) mkdir('./content');
         if (!is_dir('./content'. $currentEndpoint['url'] .'s')) mkdir('./content'. $currentEndpoint['url'] .'s');
         $currentItem['flyffdb_meta_id'] = substr($currentEndpoint['url'] . '_' . $currentItem['id'], 1);
@@ -106,5 +105,5 @@ foreach($endpoints as $currentEndpoint) {
     });
 }
 echo "Downloading Images..." . PHP_EOL;
-\ImageHelper::ProcessDownloadImageQueue();
-echo "Took: " . (microtime(true) - $timeStart)/60 . 'minutes';
+Flyffdatabase\ContentGeneration\ImageHelper::ProcessDownloadImageQueue();
+echo "Took: " . (microtime(true) - $timeStart)/60 . 'minutes' . PHP_EOL;

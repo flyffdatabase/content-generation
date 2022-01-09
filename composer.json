@@ -1,0 +1,10 @@
+{
+    "name": "flyffdatabase/content-generation",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Flyffdatabase\\ContentGeneration\\": "src/"
+        }
+    },
+    "require": {}
+}
