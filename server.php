@@ -37,6 +37,7 @@ $http->on("request", function ($request, $response) {
     $result=curl_exec ($ch);
 
     $response->header("Content-Type", "application/json");
+    $response->header("Access-Control-Allow-Origin", "*");
     $response->end($result);
 });
 
