@@ -21,3 +21,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Deploy with rsync
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/flyffdb/content-generation/
+      - name: Run content generation and image downloader
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd content-generation; php composer.phar install; php generate.php"
