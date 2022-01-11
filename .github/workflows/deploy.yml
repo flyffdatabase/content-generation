@@ -23,3 +23,7 @@ jobs:
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/flyffdb/content-generation/
       - name: Run content generation and image downloader
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd content-generation; php composer.phar install; php generate.php"
+      - name: Stop and delete current searchserver container
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker container stop searchserver; docker container rm searchserver"
+      - name: Start fresh searchserver container
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker run -d -v /home/flyffdb/content-generation/:/app -w /app -p 9501:9501 --name searchserver openswoole/swoole php server.php"
