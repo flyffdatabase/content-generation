@@ -59,7 +59,7 @@ if (is_dir($contentBaseDir)) {
             // Push 
             array_push($bulkBuffer, $objectData);
 
-            if (count($bulkBuffer) == 25) {
+            if (count($bulkBuffer) == 100) {
                 $bulkBufferCallback($currentSubDirectory, $bulkBuffer);
             }
             
