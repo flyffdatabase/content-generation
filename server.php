@@ -12,12 +12,12 @@ $http->on("Start", function ($server) {
 });
 
 $http->on("request", function ($request, $response) {
-    $uri = substr($request->server['request_uri'], 1);
+    $uri = substr(urldecode($request->server['request_uri']), 1);
     $uri = explode("/", $uri);
-    $uri = implode(" ", $uri);
+    $uri = "_all:".implode(" _all:", $uri);
 
     $payloadBuffer = [
-        "search_type" => "fuzzy",
+        "search_type" => "query",
         "query" =>
         [
             "term" => $uri
