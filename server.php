@@ -12,12 +12,16 @@ $http->on("Start", function ($server) {
 });
 
 $http->on("request", function ($request, $response) {
+    
     $uri = substr(urldecode($request->server['request_uri']), 1);
     $uri = explode("/", $uri);
-    $uri = "_all:".implode(" _all:", $uri);
+    $uri = implode(" ", $uri);
+    //$uri = explode(" ", $uri);
+    var_dump($uri);
+
 
     $payloadBuffer = [
-        "search_type" => "query",
+        "search_type" => "querystring",
         "query" =>
         [
             "term" => $uri
