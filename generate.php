@@ -1,6 +1,6 @@
 <?php
 require_once('./vendor/autoload.php');
-/*
+
 $monsterByDroppingItem = [];
 
 $endpoints = [[
@@ -107,93 +107,3 @@ foreach($endpoints as $currentEndpoint) {
 echo "Downloading Images..." . PHP_EOL;
 Flyffdatabase\ContentGeneration\ImageHelper::ProcessDownloadImageQueue();
 echo "Took: " . (microtime(true) - $timeStart)/60 . 'minutes' . PHP_EOL;
-
-*/
-
-// Go through all content directories that we just generated and bulk index them into zinc
-/*
-$contentBaseDir = './content';
-if (is_dir($contentBaseDir)) {
-    $dirListing = scandir($contentBaseDir);
-
-    foreach($dirListing as $currentSubDirectory) {
-        if ($currentSubDirectory == "." || $currentSubDirectory == "..") {
-            continue;
-        }
-
-        //process subfolder
-        //Delete index for $currentSubDirectory
-        
-        $subDirListing = scandir($contentBaseDir . "/" . $currentSubDirectory);
-        
-        $bulkBuffer = [];
-        $bulkBufferCallback = function ($index, &$bulkBuffer) {
-            if (count($bulkBuffer) == 0) return;
-
-            // compile $bulkBuffer into zinc bulk payload
-            // { "index" : { "_index" : "olympics" } } 
-            $payloadBuffer = "";
-            foreach($bulkBuffer as $currentBufferItem) {
-                $payloadBuffer .= json_encode(["index" => ["_index" => $index]])."\n";
-                $payloadBuffer .= json_encode($currentBufferItem)."\n";
-            }
-
-            $ch = curl_init();
-
-            curl_setopt($ch, CURLOPT_URL,            "http://mvs-1.flyffdb.info:4080/api/_bulk" );
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-            curl_setopt($ch, CURLOPT_POST,           1 );
-            curl_setopt($ch, CURLOPT_POSTFIELDS,     $payloadBuffer ); 
-            curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
-            curl_setopt($ch, CURLOPT_USERPWD, "admin:testpass"); 
-
-            $result=curl_exec ($ch);
-
-            $bulkBuffer = [];
-        };
-        $idx = 0;
-        foreach($subDirListing as $currentObjectFileName) {
-            if ($currentObjectFileName == "." || $currentObjectFileName == "..") {
-                continue;
-            }
-
-            $objectDataRaw = file_get_contents($contentBaseDir . "/" . $currentSubDirectory . "/" . $currentObjectFileName);
-            $objectData = json_decode($objectDataRaw, true);
-
-            // Push 
-            array_push($bulkBuffer, $objectData);
-
-            if (count($bulkBuffer) == 25) {
-                $bulkBufferCallback($currentSubDirectory, $bulkBuffer);
-            }
-            
-            $idx++;
-        }
-        $bulkBufferCallback($currentSubDirectory, $bulkBuffer);
-    }
-}
-//indexing end
-*/
-
-$query = "staff";
-
-$payloadBuffer = [
-    "search_type" => "fuzzy",
-    "query" =>
-    [
-        "term" => $query
-    ],
-    "from" => 0, # use together with max_results for paginated results.
-    "max_results" => 20
-];
-$ch = curl_init();
-
-curl_setopt($ch, CURLOPT_URL,            "http://mvs-1.flyffdb.info:4080/api/items/_search" );
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-curl_setopt($ch, CURLOPT_POST,           1 );
-curl_setopt($ch, CURLOPT_POSTFIELDS,     json_encode($payloadBuffer) ); 
-curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
-curl_setopt($ch, CURLOPT_USERPWD, "admin:testpass"); 
-
-$result=curl_exec ($ch);
-echo json_encode(json_decode($result), \JSON_PRETTY_PRINT);
