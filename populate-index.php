@@ -11,7 +11,14 @@ if (is_dir($contentBaseDir)) {
         }
 
         //process subfolder
-        //@TODO: Delete index for $currentSubDirectory
+        //TODO: Delete index for $currentSubDirectory
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, "http://mvs-1.flyffdb.info:4080/api/index/" . $currentSubDirectory );
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_USERPWD, "admin:testpass"); 
+
+        $result=curl_exec ($ch);
         
         $subDirListing = scandir($contentBaseDir . "/" . $currentSubDirectory);
         
