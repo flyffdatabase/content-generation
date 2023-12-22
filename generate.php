@@ -7,7 +7,7 @@ $endpoints = [[
     'url' => '/monster',
     'postProcessing' => function (&$currentItem) use (&$monsterByDroppingItem) {
         $currentItem['icon'] = Flyffdatabase\ContentGeneration\ImageHelper::QueueDownloadImage(
-            'https://flyff-api.sniegu.fr/image/monster/' . $currentItem['icon'], 
+            'https://api.flyff.com/image/monster/' . $currentItem['icon'], 
             '/icon/monster', 
             $currentItem['icon']
         );
@@ -26,7 +26,7 @@ $endpoints = [[
         $currentItem['flyffdb_dropped_by'] = [];
 
         $currentItem['icon'] = Flyffdatabase\ContentGeneration\ImageHelper::QueueDownloadImage(
-            'https://flyff-api.sniegu.fr/image/item/' . $currentItem['icon'], 
+            'https://api.flyff.com/image/item/' . $currentItem['icon'], 
             '/icon/item', 
             $currentItem['icon']
         );
@@ -42,7 +42,7 @@ $endpoints = [[
             for($y = 0; $y < $currentWorld['height']; $y = $y + $currentWorld['tileSize']) {
                 $tileFileName = $currentWorld['tileName'] . ($x / $currentWorld['tileSize']) . '-' . ($y / $currentWorld['tileSize']) . '-0.png';
                 Flyffdatabase\ContentGeneration\ImageHelper::QueueDownloadImage(
-                    'https://flyff-api.sniegu.fr/image/world/' . $tileFileName, 
+                    'https://api.flyff.com/image/world/' . $tileFileName, 
                     '/icon/world', 
                     $tileFileName
                 );
@@ -65,16 +65,13 @@ $endpoints = [[
     'url' => '/npc',
     'postProcessing' => function (&$currentItem) {
         $currentItem['image'] = Flyffdatabase\ContentGeneration\ImageHelper::QueueDownloadImage(
-            'https://flyff-api.sniegu.fr/image/npc/' . $currentItem['image'], 
+            'https://api.flyff.com/image/npc/' . $currentItem['image'], 
             '/icon/npc', 
             $currentItem['image']
         );
     },
 ],[
     'url' => '/quest',
-    'postProcessing' => null,
-],[
-    'url' => '/karma',
     'postProcessing' => null,
 ],[
     'url' => '/achievement',

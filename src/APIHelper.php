@@ -11,7 +11,7 @@ namespace Flyffdatabase\ContentGeneration {
                 return json_decode($content, true);
             }
         
-            $baseApiUrl = 'https://flyff-api.sniegu.fr';
+            $baseApiUrl = 'https://api.flyff.com';
             $retryCount = 0;
             $downloadSuccess = false;
             $content = '';

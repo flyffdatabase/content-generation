@@ -80,7 +80,7 @@ namespace Flyffdatabase\ContentGeneration {
         }
 
         public static function GenerateCDNUrl($filePath) {
-            return 'https://ik.imagekit.io/flyffdb' . $filePath;
+            return '' . $filePath;
         }
     }
 }
